@@ -1,0 +1,48 @@
+<!doctype html>
+<html class="no-js" lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>$title$ - haskellnautas</title>
+    $if(description)$
+    <meta name="description" content="$description$">
+    $endif$
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/main.css">
+  </head>
+
+  <body>
+    <div class="content">
+      $body$
+    </div>
+
+    <footer class="footer">
+      <div>
+        <nav class="container">
+          <p>
+            Sitio generado con <a target="_blank" href="https://jaspervdj.be/hakyll/">Hakyll</a>.
+            Código fuente en <a target="_blank" href="https://github.com/haskellMAD/hakyll-haskellnautas">Github</a>.
+            Contenido reutilizable bajo <a target="_blank" href="https://creativecommons.org/licenses/by-sa/3.0/es/">CC BY-SA 3.0</a>.
+
+            <br>
+
+            
+            <a href="/">Inicio</a> -
+            <a href="/sobre-nosotros.html">Sobre nosotros</a> -
+            <a href="http://haskellnautas.herokuapp.com" target="_blank">Slack</a>
+          </p>
+        </nav>
+      </div>
+    </footer>
+
+    <script src="http://cdn.jsdelivr.net/walkway/0.0.7/walkway.min.js"></script>
+    <script>
+      var svg = new Walkway({selector:'.cover-content svg',duration:'1000'});
+      svg.draw();
+    </script>
+  </body>
+</html>
