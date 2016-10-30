@@ -2,7 +2,9 @@
 import           Data.Monoid          (mappend)
 import qualified Data.Set             as Set
 import           Hakyll
+import           Haskellnautas.Html
 import           Haskellnautas.Routes
+import           Haskellnautas.Time
 import           Text.Pandoc.Options
 
 config :: Configuration
@@ -24,7 +26,9 @@ main = hakyllWith config $ do
     compile copyFileCompiler
 
   match "pages/**.md" $ do
-    route $ stripRoute "pages/" `composeRoutes` setExtension "html"
+    route $ stripRoute "pages/"
+      `composeRoutes` setExtension "html"
+      `composeRoutes` cleanRoute
     compile $ pandocCompiler
       >>= loadAndApplyTemplate "templates/page.html" defaultContext
       >>= loadAndApplyTemplate "templates/base.html" defaultContext
@@ -34,6 +38,7 @@ main = hakyllWith config $ do
 
   match "posts/*" $ do
     route $ setExtension "html"
+      `composeRoutes` cleanRoute
     compile $ pandocMathCompiler
       >>= loadAndApplyTemplate "templates/post.html" (postCtxWithTags tags)
       >>= loadAndApplyTemplate "templates/base.html" (postCtxWithTags tags)
@@ -60,8 +65,12 @@ main = hakyllWith config $ do
       >>= loadAndApplyTemplate "templates/base.html" postCtx
       >>= relativizeUrls
 
-  create ["archive.html"] $ do
-    route idRoute
+  match "CNAME" $ do
+    route $ idRoute
+    compile copyFileCompiler
+
+  create ["archivo.html"] $ do
+    route $ cleanRoute
     compile $ do
       posts <- recentFirst =<< loadAll "posts/*"
       let archiveCtx = listField "posts" postCtx (return posts) `mappend`
@@ -85,6 +94,7 @@ main = hakyllWith config $ do
         >>= loadAndApplyTemplate "templates/home.html" homeCtx
         >>= loadAndApplyTemplate "templates/base.html" homeCtx
         >>= relativizeUrls
+        >>= useCleanUrls
 
 
 --     match "css/*.css" $ do
@@ -128,7 +138,7 @@ main = hakyllWith config $ do
 
 postCtx :: Context String
 postCtx =
-    dateField "date" "%B %e, %Y" `mappend`
+    dateFieldWith timeLocale "date" "%e de %B de %Y" `mappend`
     defaultContext
 
 pandocMathCompiler :: Compiler (Item String)

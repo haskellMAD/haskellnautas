@@ -1,8 +1,20 @@
+<header class="secondary-header">
+  <nav class="navigation-wrapper">
+    <ul class="secondary-navigation">
+      <li><a class="font-small" href="/">Haskellnautas</a></li>
+      <li><a class="font-small" href="/comunidad.html">Comunidad</a></li>
+      <li><a class="font-small" href="/archivo.html">Archivo</a></li>
+      <li><a class="font-small" href="http://haskellnautas.herokuapp.com" target="_blank">Slack</a></li>
+    </ul>
+  </nav>
+</header>
+
 <article class="container">
-  <div class="info">
-    Posted on $date$
+  <h1>$title$</h1>
+  <div class="info font-small">
+    Publicado el $date$ 
     $if(author)$
-    by $author$
+    por <a href="/autores/$author$.html">$author$</a>
     $endif$
   </div>
 

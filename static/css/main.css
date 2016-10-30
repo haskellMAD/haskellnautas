@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Open+Sans|Raleway');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans|Raleway|Inconsolata');
 
 html {font-size: 14px;}
 * {box-sizing: border-box;}
@@ -8,6 +8,7 @@ body {
   -webkit-font-smoothing: antialiased;
   color: #333;
   line-height: 1.6em;
+  min-height: 100%;
 }
 
 p {margin-bottom: 1.3em;}
@@ -57,16 +58,15 @@ small, .font-small {font-size: 0.707em;}
 
 .container {
   margin:0 auto;
-  max-width: 50em;
+  width: 50em;
   padding: 0 2em;
   position: relative;
-  width:100%;
 }
 
 .cover-content svg path {
-    stroke: white;
-    stroke-width: 1px;
-    fill: transparent;
+  stroke: white;
+  stroke-width: 1px;
+  fill: transparent;
 }
 
 .cover-content svg path.bottom-line {
@@ -75,32 +75,73 @@ small, .font-small {font-size: 0.707em;}
   fill: white;
 }
 
-.navigation {
+.navbar {
+  position: fixed;
+  left: 0; right: 0;
+  z-index: 100;
+}
+
+.navbar-bg {
+  background-color: #151b2b;
+  opacity: 0.94;
+  -moz-transition: all 600ms ease-out;
+  -webkit-transition: all 600ms ease-out;
+  -o-transition: all 600ms ease-out;
+  transition: all 600ms ease-out;
+}
+
+.navigation-wrapper {
+  width: 45em;
+  margin: 0 auto;
+}
+
+.navigation,
+.secondary-navigation {
   float: right;
 }
 
-.navigation li {
+.secondary-header {
+  height: 5em;
+}
+
+.secondary-navigation {
+  color: #333;
+}
+
+.navigation li,
+.secondary-navigation li {
   display: inline-block;
   margin: 0 0 0 0.5em;
   list-style-type: none;
 }
 
+.navigation a,
+.secondary-navigation a {text-decoration: none;}
+
 .navigation a {
   color: white;
-  text-decoration: none;
 }
 
 .navigation a:hover {
   border-bottom: 2px solid white;
 }
 
+.secondary-navigation a {
+  color: #333;
+}
+
+.secondary-navigation a:hover {
+  border-bottom: 2px solid #333;
+}
+
 .footer {
+  overflow: hidden;
   background: url(/images/haskell-pattern.png) repeat;
 }
 
 .footer > div {
-  padding-top: 5em;
-  min-height: 10em;
+  padding-top: 10em;
+  min-height: 15em;
   text-align: center;
   font-size: 0.7em;
   background: -moz-linear-gradient(top,  rgba(255,255,255,1) 9%, rgba(255,255,255,1) 10%, rgba(255,255,255,0) 100%);
@@ -111,6 +152,10 @@ small, .font-small {font-size: 0.707em;}
 
 .footer p, .footer a {
   color: #999;
+}
+
+code, pre, kbd, samp {
+  font-family: Inconsolata, monospace;
 }
 
 @media only screen and (min-width: 768px) {

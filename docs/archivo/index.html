@@ -9,8 +9,9 @@
 
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
-    <link rel="stylesheet" href="./css/normalize.css">
-    <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" href="../css/normalize.css">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../styles/grayscale.css">
   </head>
 
   <body>
@@ -20,7 +21,7 @@
   <ul>
     
         <li>
-            <a href="./posts/2015-08-23-example.html">example post</a> - August 23, 2015
+            <a href="../posts/2015-08-23-example/index.html">example post</a> - 23 de agosto de 2015
         </li>
     
 </ul>
@@ -36,22 +37,35 @@
             Sitio generado con <a target="_blank" href="https://jaspervdj.be/hakyll/">Hakyll</a>.
             Código fuente en <a target="_blank" href="https://github.com/haskellMAD/hakyll-haskellnautas">Github</a>.
             Contenido reutilizable bajo <a target="_blank" href="https://creativecommons.org/licenses/by-sa/3.0/es/">CC BY-SA 3.0</a>.
-
-            <br>
-
-            
-            <a href="./">Inicio</a> -
-            <a href="./sobre-nosotros.html">Sobre nosotros</a> -
-            <a href="http://haskellnautas.herokuapp.com" target="_blank">Slack</a>
           </p>
         </nav>
       </div>
     </footer>
 
     <script src="http://cdn.jsdelivr.net/walkway/0.0.7/walkway.min.js"></script>
+    <script>window.Walkway || document.write('<script src="/js/walkway.min.js"><\/script>')</script>
+
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
+    <script>window.jQuery || document.write('<script src="/js/vendor/jquery-3.1.1.slim.min.js"><\/script>')</script>
     <script>
       var svg = new Walkway({selector:'.cover-content svg',duration:'1000'});
       svg.draw();
+    </script>
+    <script src="../js/highlight.pack.js"></script>
+    <script>
+      jQuery(window).scroll(function() {
+        var scroll = jQuery(window).scrollTop();
+        if (scroll > 100) {
+          jQuery(".navbar").addClass("navbar-bg");
+        } else {
+          jQuery(".navbar").removeClass("navbar-bg");
+        }
+      });
+      jQuery(document).ready(function() {
+        jQuery('pre code').each(function(i, block) {
+          hljs.highlightBlock(block);
+        });
+      });
     </script>
   </body>
 </html>
