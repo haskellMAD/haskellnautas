@@ -1,0 +1,24 @@
+$partial("templates/header.html")$
+
+<div class="container">
+  <div class="author-info">
+    <img class="author-picture" src="$picture$">
+    <p>$title$</p>
+    <p>
+      $if(twitter)$
+      <a target="_blank" href="$twitter$">Twitter</a>
+      $endif$
+      $if(linkedin)$
+      <a target="_blank" href="$linkedin$">Linkedin</a>
+      $endif$
+      $if(github)$
+      <a target="_blank" href="$github$">Github</a>
+      $endif$
+      $if(blog)$
+      <a target="_blank" href="$blog$">Blog</a>
+      $endif$
+    </p>
+  </div>
+  $body$
+</div>
+

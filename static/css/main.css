@@ -161,3 +161,69 @@ code, pre, kbd, samp {
 @media only screen and (min-width: 768px) {
   body, html { font-size: 18px; }
 }
+
+.posts-list {
+  list-style: none;
+}
+
+.posts-list h1 {
+  font-size: 1.5em;
+  font-style: italic;
+}
+
+.post-meta,
+.post-extract {
+  color: #999;
+}
+
+.read-more, .post-meta {font-size: 0.7em;}
+
+h1 a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.posts-list li:last-child hr {
+  display: none;
+}
+
+hr.style-eight {
+    padding: 0;
+    border: none;
+    border-top: 1px solid #ccc;
+    color: #ccc;
+    text-align: center;
+}
+hr.style-eight:after {
+    content: "§";
+    display: inline-block;
+    position: relative;
+    top: -1em;
+    font-size: 0.8em;
+    padding: 0 0.25em;
+    background: white;
+}
+
+.author-picture {
+  width: 120px;
+  border-radius: 60px;
+  margin: 0 auto;
+}
+
+.author-info {
+  text-align: center;
+}
+
+.author-info a {
+  font-size: 0.8em;
+  color: #666;
+  text-decoration: none;
+}
+
+.author-info a:hover {
+  color: #333;
+}
+
+.author-info > p> a:not(:last-child):after {
+  content: ' ·';
+}

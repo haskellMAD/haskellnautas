@@ -25,14 +25,24 @@ main = hakyllWith config $ do
     route $ stripRoute "public/"
     compile copyFileCompiler
 
-  match "pages/**.md" $ do
+  match "pages/autores/*.md" $ do
     route $ stripRoute "pages/"
       `composeRoutes` setExtension "html"
       `composeRoutes` cleanRoute
     compile $ pandocCompiler
-      >>= loadAndApplyTemplate "templates/page.html" defaultContext
+      >>= loadAndApplyTemplate "templates/author.html" defaultContext
       >>= loadAndApplyTemplate "templates/base.html" defaultContext
       >>= relativizeUrls
+
+  match "pages/comunidad.md" $ do
+    route $ stripRoute "pages/"
+      `composeRoutes` setExtension "html"
+      `composeRoutes` cleanRoute
+    compile $ pandocCompiler
+      >>= loadAndApplyTemplate "templates/simple.html" defaultContext
+      >>= loadAndApplyTemplate "templates/base.html" defaultContext
+      >>= relativizeUrls
+      >>= useCleanUrls
 
   tags <- buildTags "posts/*" (fromCapture "tags/*.html")
 
@@ -43,6 +53,7 @@ main = hakyllWith config $ do
       >>= loadAndApplyTemplate "templates/post.html" (postCtxWithTags tags)
       >>= loadAndApplyTemplate "templates/base.html" (postCtxWithTags tags)
       >>= relativizeUrls
+      >>= useCleanUrls
 
   tagsRules tags $ \tag pattern -> do
     let title = "Posts tagged \""++tag++"\""
