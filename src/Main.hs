@@ -25,6 +25,10 @@ main = hakyllWith config $ do
     route $ stripRoute "public/"
     compile copyFileCompiler
 
+  match "favicon/*" $ do
+    route $ stripRoute "favicon/"
+    compile copyFileCompiler
+
   match "pages/autores/*.md" $ do
     route $ stripRoute "pages/"
       `composeRoutes` setExtension "html"
@@ -44,9 +48,9 @@ main = hakyllWith config $ do
       >>= relativizeUrls
       >>= useCleanUrls
 
-  tags <- buildTags "posts/*" (fromCapture "tags/*.html")
+  tags <- buildTags "articulos/*" (fromCapture "tags/*.html")
 
-  match "posts/*" $ do
+  match "articulos/*" $ do
     route $ setExtension "html"
       `composeRoutes` cleanRoute
     compile $ pandocMathCompiler
@@ -69,7 +73,7 @@ main = hakyllWith config $ do
         >>= loadAndApplyTemplate "templates/base.html" ctx
         >>= relativizeUrls
 
-  match "drafts/*" $ do
+  match "borradores/*" $ do
     route $ setExtension "html"
     compile $ pandocMathCompiler
       >>= loadAndApplyTemplate "templates/draft.html" postCtx
@@ -83,9 +87,8 @@ main = hakyllWith config $ do
   create ["archivo.html"] $ do
     route $ cleanRoute
     compile $ do
-      posts <- recentFirst =<< loadAll "posts/*"
+      posts <- recentFirst =<< loadAll "articulos/*"
       let archiveCtx = listField "posts" postCtx (return posts) `mappend`
-                       constField "title" "Archives"            `mappend`
                        defaultContext
 
       makeItem ""
@@ -93,10 +96,22 @@ main = hakyllWith config $ do
         >>= loadAndApplyTemplate "templates/base.html" archiveCtx
         >>= relativizeUrls
 
+  create ["borradores.html"] $ do
+    route $ cleanRoute
+    compile $ do
+      posts <- recentFirst =<< loadAll "borradores/*"
+      let archiveCtx = listField "posts" postCtx (return posts) `mappend`
+                       defaultContext
+
+      makeItem ""
+        >>= loadAndApplyTemplate "templates/drafts.html" archiveCtx
+        >>= loadAndApplyTemplate "templates/base.html" archiveCtx
+        >>= relativizeUrls
+
   match "pages/index.html" $ do
     route $ stripRoute "pages/"
     compile $ do
-      posts <- recentFirst =<< loadAll "posts/*"
+      posts <- recentFirst =<< loadAll "articulos/*"
       let homeCtx = listField "posts" postCtx (return posts) `mappend`
                     defaultContext
 
@@ -106,46 +121,6 @@ main = hakyllWith config $ do
         >>= loadAndApplyTemplate "templates/base.html" homeCtx
         >>= relativizeUrls
         >>= useCleanUrls
-
-
---     match "css/*.css" $ do
---       route   idRoute
---       compile compressCssCompiler
-
---     match "css/*.hs" $ do
---       route $ setExtension "css"
---       compile $ getResourceString >>= withItemBody (unixFilter "stack" ["runghc"])
-
---     match (fromList ["about.rst", "contact.markdown"]) $ do
---       route   $ setExtension "html"
---       compile $ pandocCompiler
---         >>= loadAndApplyTemplate "templates/default.html" defaultContext
---         >>= relativizeUrls
-
---     match "posts/*" $ do
---       route $ setExtension "html"
---       compile $ pandocCompiler
---         >>= loadAndApplyTemplate "templates/post.html"    postCtx
---         >>= loadAndApplyTemplate "templates/default.html" postCtx
---         >>= relativizeUrls
-
---     create ["archive.html"] $ do
---       route idRoute
---       compile $ do
---         posts <- recentFirst =<< loadAll "posts/*"
---         let archiveCtx =
---                 listField "posts" postCtx (return posts) `mappend`
---                 constField "title" "Archives"            `mappend`
---                 defaultContext
-
---         makeItem ""
---           >>= loadAndApplyTemplate "templates/archive.html" archiveCtx
---           >>= loadAndApplyTemplate "templates/default.html" archiveCtx
---           >>= relativizeUrls
-
-
---     match "templates/*" $ compile templateCompiler
-
 
 postCtx :: Context String
 postCtx =

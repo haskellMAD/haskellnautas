@@ -1,4 +1,12 @@
-<p class="draft">Borrador</p>
+$partial("templates/header-draft.html")$
 <article class="container">
+  <h1>$title$</h1>
+  <div class="info font-small">
+    Publicado el $date$ 
+    $if(author)$
+    por <a href="/autores/$author$.html">$author$</a>
+    $endif$
+  </div>
+
   $body$
 </article>

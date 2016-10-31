@@ -227,3 +227,20 @@ hr.style-eight:after {
 .author-info > p> a:not(:last-child):after {
   content: ' ·';
 }
+
+.draft {
+  text-align: center;
+  background: repeating-linear-gradient(
+    45deg,
+    #fff,
+    #fff 10px,
+    #eee 10px,
+    #eee 20px
+  );
+  border-bottom: 1px solid #eee;
+}
+
+.draft span {
+  font-weight: bold;
+  display: inline-block;
+}
