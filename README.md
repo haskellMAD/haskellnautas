@@ -2,7 +2,7 @@
 
 ## Instalar
 
-1. Clonar el repositorio `git clone git@github.com:haskellMAD/hakyll-haskellnautas.git
+1. Clonar el repositorio `git clone git@github.com:haskellMAD/hakyll-haskellnautas.git`
 2. Entrar en el repositorio `cd hakyll-haskellnautas`
 3. Compilar el proyecto `stack build`
 
