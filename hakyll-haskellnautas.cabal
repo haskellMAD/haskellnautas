@@ -21,3 +21,6 @@ executable site
                      , containers == 0.5.*
                      , filepath == 1.4.*
                      , time == 1.5.*
+  other-modules:       Haskellnautas.Html
+                     , Haskellnautas.Routes
+                     , Haskellnautas.Time
