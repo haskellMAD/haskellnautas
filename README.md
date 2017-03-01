@@ -17,3 +17,12 @@ author: <nombre de usuario del autor>
 extract: <Extracto de pocas líneas del artículo
 ---
 ```
+
+### Compilando el HTML
+
+Para que las páginas se vean correctamente en http://haskellnautas.xyz , hay que compilar el contenido a html.  Esto lo hacemos con el siguiente comando:
+
+```bash
+$ stack exec site clean # limpia los archivos cacheados
+$ stack exec site build # construye el html
+```

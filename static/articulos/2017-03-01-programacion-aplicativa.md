@@ -268,10 +268,12 @@ y obtener el post por id, podemos componer una página de manera
 idiomática[^1]!
 
 Pero hay una parte muy importante del blog que estamos olvidando, y
-es ![](http://i.imgur.com/RadSf.jpg). Por ahora no estamos escribiendo
-nada por la pantalla, ni yendo a la base de datos a obtener nuestros
-posts.  Sólamente estamos creando nuevos valores y
-devolviéndolos. Estamos creando un Árbol de Sintáxis Abstracta, o AST.
+es ![](http://i.imgur.com/RadSf.jpg). 
+
+Por ahora no estamos escribiendo nada por la pantalla, ni yendo a la
+base de datos a obtener nuestros posts.  Sólamente estamos creando
+nuevos valores y devolviéndolos. Estamos creando un Árbol de Sintáxis
+Abstracta, o AST.
 
 Para evaluar nuestro AST, tenemos que usar un concepto nuevo, llamado
 Transformación Natural. Aunque tenga un nombre tan increíblemente
