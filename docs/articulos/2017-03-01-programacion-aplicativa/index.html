@@ -1,0 +1,287 @@
+<!doctype html>
+<html class="no-js" lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Programación Aplicativa - haskellnautas</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="apple-touch-icon" sizes="57x57" href="../../apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="../../apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="../../apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="../../apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="../../apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="../../apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="../../apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="../../apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="../../android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="../../favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
+    <link rel="manifest" href="../../manifest.json">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+
+    <link rel="stylesheet" href="../../css/normalize.css">
+    <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="../../styles/grayscale.css">
+  </head>
+
+  <body>
+    <div class="content">
+      <header class="secondary-header">
+  <nav class="navigation-wrapper">
+    <ul class="secondary-navigation">
+      <li><a class="font-small" href="../../">Haskellnautas</a></li>
+      <li><a class="font-small" href="../../comunidad">Comunidad</a></li>
+      <li><a class="font-small" href="../../archivo">Archivo</a></li>
+      <li><a class="font-small" href="http://haskellnautas.herokuapp.com" target="_blank">Slack</a></li>
+    </ul>
+  </nav>
+</header>
+
+<article class="container">
+  <h1>Programación Aplicativa</h1>
+  <div class="info font-small">
+    Publicado el  1 de marzo de 2017 
+    
+    por <a href="../../autores/pepegar">pepegar</a>
+    
+  </div>
+
+  <blockquote>
+<p>Este post es una traducción al castellano del que se puede encontrar en http://pepegar.github.io/2016/09/applicative-style-programming.html</p>
+</blockquote>
+<h1 id="programación-aplicativa">Programación Aplicativa</h1>
+<p>En este post vamos a ver qué son los funtores aplicativos, un poco más que los funtores, un poco menos que las mónadas. Y, si tenemos mónadas, ¿para qué queremos funtores? La respuesta es que al proveer menos funcionalidad, los podremos usar en más ocasiones.</p>
+<p>Este post intenta complementar la charla que dimos en HaskellMAD, puedes ver los slides de la charla en este enlace</p>
+<p>Los funtores aplicativos se introdujeron en <a href="http://strictlypositive.org/Idiom.pdf">un artículo</a> en <a href="https://www.cambridge.org/core/journals/journal-of-functional-programming">The Journal of Functional Programming</a>.</p>
+<p>Lo que tenemos que entender es que los funtores aplicativos, como los funtores, las mónadas o los monoides, son una <em>typeclass</em>. Ésta es su definición:</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">class</span> <span class="dt">Functor</span> f <span class="ot">=&gt;</span> <span class="dt">Applicative</span> f <span class="kw">where</span>
+<span class="ot">    pure ::</span> a <span class="ot">-&gt;</span> f a
+<span class="ot">    (&lt;*&gt;) ::</span> f (a <span class="ot">-&gt;</span> b) <span class="ot">-&gt;</span> f a <span class="ot">-&gt;</span> f b</code></pre></div>
+<p>Muy bien, ¿y qué es lo que tenemos aquí? Básicamente podemos ver que <em>Applicative</em> es una interfaz que declara dos funciones. La primera de ellas <code>pure</code>, permite meter elementos dentro de nuestro contexto aplicativo. La otra <code>&lt;*&gt;</code>, es una funcion infija que permite aplicar la una funcion <code>a -&gt; b</code> contenida en un contexto aplicativo a un valor <code>a</code> contenido en el mismo contexto, dando como resultado un valor <code>f b</code>. Después de el trabalenguas, una aclaración, podemos pensar en los funtores aplicativos como aplicación de funciones dentro de un contexto.</p>
+<p>Veamos un ejemplo sencillo del uso de Applicative.</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="dt">Prelude</span><span class="fu">&gt;</span> <span class="kw">let</span> square <span class="fu">=</span> \ x <span class="ot">-&gt;</span> x <span class="fu">*</span> x
+<span class="dt">Prelude</span><span class="fu">&gt;</span> <span class="kw">let</span> plusTwo <span class="fu">=</span> \ x <span class="ot">-&gt;</span> x <span class="fu">+</span> <span class="dv">2</span>
+<span class="dt">Prelude</span><span class="fu">&gt;</span> <span class="kw">let</span> functions <span class="fu">=</span> [square, plusTwo]
+<span class="dt">Prelude</span><span class="fu">&gt;</span> <span class="kw">let</span> numbers <span class="fu">=</span> [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]
+<span class="dt">Prelude</span><span class="fu">&gt;</span> functions <span class="fu">&lt;*&gt;</span> numbers
+[<span class="dv">1</span>,<span class="dv">4</span>,<span class="dv">9</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>]</code></pre></div>
+<p>En el ejemplo vemos cómo las funciones contenidas dentro de la lista <code>functions</code> son aplicadas a la lista <code>numbers</code> y el resultado es concatenado. La librería estandard de Haskell nos ofrece instancias para la mayoría de tipos de datos, y se importan automáticamente en <code>Prelude</code>, por eso no necesitamos hacer ningún import para que el ejemplo funcione.</p>
+<p>De todos modos, no necesitamos ser genios para ver que una lista de funciones no es el ejemplo más util del mundo. Veamos un ejemplo más interesante:</p>
+<h2 id="validación">Validación</h2>
+<p>La validación de datos es un problema que todos, como programadores, nos hemos encontrado. Tenemos datos que van a entrar a nuestro dominio, pero antes de hacerlo queremos comprobar que son válidos. Al comprobar si un valor de tipo <code>a</code> es válido, nuestros validadores devolverán el valor en caso de que lo sea, o un error de tipo <code>Err</code> en caso de que no lo sea. Dado que estos validadores devolverán un tipo u otro, vamos a usar el tipo de datos <code>Either</code> de Haskell.</p>
+<p>Para entenderlo un poco, <code>Either</code> es un tipo suma. Esto quiere decir que los el número de valores posibles para un dato del tipo <code>Either a b</code> es el número de valores posibles de <code>a</code>, mas el número de valores posibles de <code>b</code>.</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">Person</span> <span class="fu">=</span> <span class="dt">Person</span> {
+<span class="ot">  name ::</span> <span class="dt">String</span>,
+<span class="ot">  age ::</span> <span class="dt">Int</span> 
+} <span class="kw">deriving</span> <span class="dt">Show</span>
+
+<span class="kw">data</span> <span class="dt">Err</span> <span class="fu">=</span> <span class="dt">String</span>
+
+<span class="ot">validateName ::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">Either</span> <span class="dt">Err</span> <span class="dt">String</span>
+validateName n <span class="fu">=</span> <span class="kw">if</span> (onlyLetters n) <span class="kw">then</span> <span class="dt">Right</span> n
+                                    <span class="kw">else</span> <span class="dt">Left</span> <span class="st">&quot;El nombre debe contener letras únicamente&quot;</span>
+
+<span class="ot">validateAge ::</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="dt">Either</span> <span class="dt">Err</span> <span class="dt">Int</span>
+validateAge a <span class="fu">=</span> <span class="kw">if</span> a <span class="fu">&gt;</span> <span class="dv">18</span> <span class="kw">then</span> <span class="dt">Right</span> a
+                          <span class="kw">else</span> <span class="dt">Left</span> <span class="st">&quot;Tienes que ser mayor de 18 años&quot;</span></code></pre></div>
+<p>En nuestro ejemplo, tenemos un tipo de datos `Person`, que representa a una persona con nombre y edad. Y tenemos dos validadores, uno para cada componente de este tipo de datos.</p>
+<p>Ahora, con nuestros dos validadores, podemos crear una validación para <code>Person</code> si usamos notación <code>do</code>:</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">validatePersonM ::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="dt">Either</span> <span class="dt">String</span> <span class="dt">Person</span>
+validatePersonM n a <span class="fu">=</span> <span class="kw">do</span>
+    vName <span class="ot">&lt;-</span> validateName n
+    vAge <span class="ot">&lt;-</span> validateAge a
+    return <span class="fu">$</span> <span class="dt">Person</span> vName vAge</code></pre></div>
+<p>Lo que estamos haciendo aquí es muy sencillo. Dado que Either provee una instancia de <em>Monad</em>, podemos utilizar la notación <code>do</code> para secuenciar operaciones monádicas sobre este tipo de datos. Pero, hay una cosa que debemos preguntarnos: ¿Realmente queremos que nuestras operaciones sean secuenciales? Cuando la respuesta a esta pregunta sea <em>No</em>, sabemos que estamos ante un claro caso de UIDM, o <em>uso indiscriminado de Monad</em>.</p>
+<p>Para resolver nuestro <em>UIDM</em>, y sabiendo que <code>Either</code> aparte de proveer una instancia de mónada, provee otra para <code>Applicative</code>, podemos cambiar nuestras operaciones secuenciales a operaciones aplicativas.</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">validatePersonA ::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">Either</span> <span class="dt">String</span> <span class="dt">Person</span>
+validatePersonA n l <span class="fu">=</span> <span class="dt">Person</span> <span class="fu">&lt;$&gt;</span> validateName n <span class="fu">&lt;*&gt;</span> validateLastName l</code></pre></div>
+<p>Pero, ¿cómo funciona esta función? Bueno, simplemente hay que entender que el operador <code>&lt;$&gt;</code> es un alias <em>infijo</em> para el <code>fmap</code> de los funtores. Es decir, la parte izquierda del operador es mapeada sobre el contenido de nuestro funtor.</p>
+<p>En esta sesión de GHCi lo podemos ver mejor:</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="dt">Prelude</span><span class="fu">&gt;</span> <span class="fu">:</span>t <span class="dt">Person</span>
+<span class="dt">Person</span><span class="ot"> ::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">Person</span>
+<span class="dt">Prelude</span><span class="fu">&gt;</span> <span class="fu">:</span>t <span class="dt">Person</span> <span class="fu">&lt;$&gt;</span> validateName <span class="st">&quot;pepe&quot;</span>
+<span class="dt">Person</span> <span class="fu">&lt;$&gt;</span> validateName <span class="st">&quot;pepe&quot;</span><span class="ot"> ::</span> <span class="dt">Either</span> <span class="dt">String</span> (<span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">Person</span>)
+<span class="dt">Prelude</span><span class="fu">&gt;</span> <span class="fu">:</span>t <span class="dt">Person</span> <span class="fu">&lt;$&gt;</span> validateName <span class="st">&quot;pepe&quot;</span> <span class="fu">&lt;*&gt;</span> validateLastName <span class="st">&quot;Garcia&quot;</span>
+<span class="dt">Person</span> <span class="fu">&lt;$&gt;</span> validateName <span class="st">&quot;pepe&quot;</span> <span class="fu">&lt;*&gt;</span> validateLastName <span class="st">&quot;Garcia&quot;</span><span class="ot"> ::</span> <span class="dt">Either</span> <span class="dt">String</span> <span class="dt">Person</span></code></pre></div>
+<h2 id="creando-nuestros-propios-aplicativos">Creando nuestros propios aplicativos</h2>
+<p>Para usar toda la magia de <code>Applicative</code> con el tipo de datos que nosotros queramos, sólamente hay que dar una instancia de la typeclass:</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">Maybe</span> a <span class="fu">=</span> <span class="dt">Just</span> a
+             <span class="fu">|</span> <span class="dt">Nothing</span>
+
+
+<span class="kw">instance</span> <span class="dt">Applicative</span> <span class="dt">Maybe</span> <span class="kw">where</span>
+    pure <span class="fu">=</span> <span class="dt">Just</span>
+
+    <span class="dt">Just</span> f  <span class="fu">&lt;*&gt;</span> m <span class="fu">=</span> fmap f m
+    <span class="dt">Nothing</span> <span class="fu">&lt;*&gt;</span> _ <span class="fu">=</span> <span class="dt">Nothing</span></code></pre></div>
+<p>Esto nos permitirá usar <code>Maybe</code> como un aplicativo, pero hay otros casos, como por ejemplo, ¿cómo puedo hacer para usar toda la magia de los aplicativos sobre un <code>ADT</code> que hayamos creado? En Haskell existe una técnica para esto que se denomina <em>~Free Applicatives~</em>. En este caso, <em>Free</em> se refiere a gratis, no a libre, y es así porque nos da una instancia de <code>Applicative</code> gratuíta para nuestro ADT.</p>
+<h3 id="free-applicatives">Free Applicatives</h3>
+<p>Los <code>Free Applicative</code> son una abstracción sobre <code>Applicative</code>, y como funcionan básicamente, es elevando a representaciones de tipos las funciones que expone la typeclass de <code>Applicative</code>.</p>
+<p>Puedes investigar más sobre la implementación <a href="https://github.com/ekmett/free">en Github</a>, pero básicamente, los <code>Free Applicative</code> se definen así:</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">Ap</span> f a <span class="kw">where</span>
+    <span class="dt">Pure</span><span class="ot"> ::</span> a <span class="ot">-&gt;</span> <span class="dt">Ap</span> f a
+    <span class="dt">Ap</span><span class="ot">   ::</span> f a <span class="ot">-&gt;</span> <span class="dt">Ap</span> f (a <span class="ot">-&gt;</span> b) <span class="ot">-&gt;</span> <span class="dt">Ap</span> f b
+
+<span class="kw">instance</span> <span class="dt">Functor</span> (<span class="dt">Ap</span> f) <span class="kw">where</span>
+  fmap f (<span class="dt">Pure</span> a)   <span class="fu">=</span> <span class="dt">Pure</span> (f a)
+  fmap f (<span class="dt">Ap</span> x y)   <span class="fu">=</span> <span class="dt">Ap</span> x ((f <span class="fu">.</span>) <span class="fu">&lt;$&gt;</span> y)
+
+<span class="kw">instance</span> <span class="dt">Apply</span> (<span class="dt">Ap</span> f) <span class="kw">where</span>
+  <span class="dt">Pure</span> f <span class="fu">&lt;.&gt;</span> y <span class="fu">=</span> fmap f y
+  <span class="dt">Ap</span> x y <span class="fu">&lt;.&gt;</span> z <span class="fu">=</span> <span class="dt">Ap</span> x (flip <span class="fu">&lt;$&gt;</span> y <span class="fu">&lt;.&gt;</span> z)
+
+<span class="kw">instance</span> <span class="dt">Applicative</span> (<span class="dt">Ap</span> f) <span class="kw">where</span>
+  pure <span class="fu">=</span> <span class="dt">Pure</span>
+  <span class="dt">Pure</span> f <span class="fu">&lt;*&gt;</span> y <span class="fu">=</span> fmap f y
+  <span class="dt">Ap</span> x y <span class="fu">&lt;*&gt;</span> z <span class="fu">=</span> <span class="dt">Ap</span> x (flip <span class="fu">&lt;$&gt;</span> y <span class="fu">&lt;*&gt;</span> z)</code></pre></div>
+<p>Ahora, con el constructor <code>Ap</code>, tenemos una instancia de <code>Applicative</code> para cualquier tipo de datos <code>* -&gt; *</code>!</p>
+<p>Para intentar dar un ejemplo, vamos a modelar un blog mediante <code>Ap</code>.</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">{-# LANGUAGE GADTs #-}</span>
+
+<span class="kw">import </span><span class="dt">Control.Applicative.Free</span>
+<span class="kw">import </span><span class="dt">Control.Applicative</span>
+
+<span class="kw">type</span> <span class="dt">Id</span> <span class="fu">=</span> <span class="dt">String</span>
+
+<span class="kw">data</span> <span class="dt">Author</span> <span class="fu">=</span> <span class="dt">Author</span> {
+<span class="ot">    name ::</span> <span class="dt">String</span>,
+<span class="ot">    lastName ::</span> <span class="dt">String</span>
+} <span class="kw">deriving</span> <span class="dt">Show</span>
+
+<span class="kw">data</span> <span class="dt">Post</span> <span class="fu">=</span> <span class="dt">Post</span> {
+<span class="ot">    id ::</span> <span class="dt">Int</span>,
+<span class="ot">    title ::</span> <span class="dt">String</span>,
+<span class="ot">    content ::</span> <span class="dt">String</span>,
+<span class="ot">    excerpt ::</span> <span class="dt">String</span>
+} <span class="kw">deriving</span> <span class="dt">Show</span>
+
+<span class="kw">data</span> <span class="dt">BlogF</span> a <span class="kw">where</span>
+    <span class="dt">GetPost</span><span class="ot"> ::</span> <span class="dt">Id</span> <span class="ot">-&gt;</span> <span class="dt">BlogF</span> <span class="dt">Post</span>
+    <span class="dt">GetAuthor</span><span class="ot"> ::</span> <span class="dt">Id</span> <span class="ot">-&gt;</span> <span class="dt">BlogF</span> <span class="dt">Author</span>
+
+<span class="kw">type</span> <span class="dt">Blog</span> a <span class="fu">=</span> <span class="dt">Ap</span> <span class="dt">BlogF</span> a</code></pre></div>
+<p>Lo más importante del ejemplo es entender que en este caso, cuando definimos nuestro <code>GADT</code>, estamos definiendo nuestro <em>lenguaje</em>, o <em>DSL</em> de operaciones de blog.</p>
+<p>También, para no tener que estar lidiando con los constructores de datos todo el rato, vamos a crear lo que se denomina como <em>smart constructors</em>, o constructores inteligentes que nos eleven un valor del tipo `BlogF` al tipo `Blog`.</p>
+<p>Para hacer esto (elevar un valor a `Ap`) la librería que usamos nos da una función llamada <code>liftAp</code>.</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">getPost ::</span> <span class="dt">Id</span> <span class="ot">-&gt;</span> <span class="dt">Blog</span> <span class="dt">Post</span>
+getPost id <span class="fu">=</span> liftAp <span class="fu">$</span> <span class="dt">GetPost</span> id
+
+<span class="ot">getAuthor ::</span> <span class="dt">Id</span> <span class="ot">-&gt;</span> <span class="dt">Blog</span> <span class="dt">Author</span>
+getAuthor id <span class="fu">=</span> liftAp <span class="fu">$</span> <span class="dt">GetAuthor</span> id</code></pre></div>
+<p>Ahora lo más divertido, vamos a crear un programa que imprima una página de nuestro blog!</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">Page</span> <span class="fu">=</span> <span class="dt">Page</span> {
+<span class="ot">    post ::</span> <span class="dt">Post</span>,
+<span class="ot">    author ::</span> <span class="dt">Author</span>
+} <span class="kw">deriving</span> <span class="dt">Show</span>
+
+<span class="ot">getPage ::</span> <span class="dt">Id</span> <span class="ot">-&gt;</span> <span class="dt">Id</span> <span class="ot">-&gt;</span> <span class="dt">Blog</span> <span class="dt">Page</span>
+getPage postId authorId <span class="fu">=</span> <span class="dt">Page</span> <span class="fu">&lt;$&gt;</span> getPost postId
+                               <span class="fu">&lt;*&gt;</span> getAuthor authorId</code></pre></div>
+<p>¡Increíble! dado que no hay dependencias entre obtener un autor por id, y obtener el post por id, podemos componer una página de manera idiomática<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>!</p>
+<p>Pero hay una parte muy importante del blog que estamos olvidando, y es <img src="http://i.imgur.com/RadSf.jpg" />. Por ahora no estamos escribiendo nada por la pantalla, ni yendo a la base de datos a obtener nuestros posts. Sólamente estamos creando nuevos valores y devolviéndolos. Estamos creando un Árbol de Sintáxis Abstracta, o AST.</p>
+<p>Para evaluar nuestro AST, tenemos que usar un concepto nuevo, llamado Transformación Natural. Aunque tenga un nombre tan increíblemente difícil, lo que tenemos que saber de las Transformaciones Naturales es que son funciones con la siguiente forma:</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">natTrans ::</span> <span class="dt">BlogF</span> a <span class="ot">-&gt;</span> <span class="dt">IO</span> a</code></pre></div>
+<p>Es decir que en vez de transformar el contenido, como hace <code>fmap</code> por ejemplo, transforma el contenerdor, manteniendo el contenido. ¿Por qué queremos interpretar a <code>IO</code>? porque en Haskell, todos los <em>side effects</em> ocurren en IO.</p>
+<p>Ahora, vamos a crear el intérprete para las operaciones <code>BlogF</code>!</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">interpret ::</span> <span class="dt">BlogF</span> a <span class="ot">-&gt;</span> <span class="dt">IO</span> a
+interpret (<span class="dt">GetPost</span> id)   <span class="fu">=</span> putStrLn (<span class="st">&quot;getting post &quot;</span> <span class="fu">++</span> show id <span class="fu">++</span> <span class="st">&quot; from DB&quot;</span>)   <span class="fu">*&gt;</span> pure <span class="fu">$</span> <span class="dt">Post</span> id <span class="st">&quot;this is the post&quot;</span> <span class="st">&quot;content of the post&quot;</span> <span class="st">&quot;excerpt&quot;</span>
+interpret (<span class="dt">GetAuthor</span> id) <span class="fu">=</span> putStrLn (<span class="st">&quot;getting author &quot;</span> <span class="fu">++</span> show id <span class="fu">++</span> <span class="st">&quot; from DB&quot;</span>) <span class="fu">*&gt;</span> pure <span class="fu">$</span> <span class="dt">Author</span> <span class="st">&quot;Pepe&quot;</span> <span class="st">&quot;García&quot;</span></code></pre></div>
+<p>Y, finalmente, vamos a interpretar nuestros programa de renderización del blog!</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">main ::</span> <span class="dt">IO</span> ()
+main <span class="fu">=</span> <span class="kw">do</span>
+    page <span class="ot">&lt;-</span> runAp interpret <span class="fu">$</span> getPage <span class="dv">1</span> <span class="dv">1</span>
+    print page
+
+<span class="co">-- Output:</span>
+<span class="co">-- getting post 1 from DB</span>
+<span class="co">-- getting author 1 from DB</span>
+<span class="co">-- Page {post = Post {id = 1, title = &quot;this is the post&quot;, content = &quot;content of the post&quot;, excerpt = &quot;excerpt&quot;}, author = Author {name = &quot;Pepe&quot;, lastName = &quot;Garc\237a&quot;}}</span></code></pre></div>
+<p><code>runAp</code> es una función de la libería <code>free</code> que toma un programa basado en <code>FreeAp</code> y lo interpreta mediante una <em>Transformación Natural</em>.</p>
+<h2 id="análisis-estático">Análisis estático</h2>
+<p>Una de las cosas más interesantes que podemos hacer con <code>AST</code>s aplicativos, es análisis estático. El análisis estático es una técnica mediante la cual podemos sacar conclusiones de un programa sin evaluarlo.</p>
+<p>La razón por la que los aplicativos permiten análisis estático, mientras que las mónadas no, es porque en los aplicativos no hay que evaluar ninguna expresión para conocer el árbol sintáctico completo. En cambio, como en las mónadas necesitamos evaluar las llamadas a <code>&gt;&gt;=</code> para obtener la siguiente expresión.</p>
+<p>Ahora imaginemos que queremos limitar el número de llamadas que nuestro blog hace a la base de datos. Dado que sabemos que en nuestro intérprete todas las operaciones <code>GetAuthor</code> y <code>GetPost</code> se interpretarán como una sentencia SQL, podemos simplemente contar el número de operaciones de este tipo.</p>
+<p>Cómo conseguimos esto?</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">instance</span> <span class="dt">Monoid</span> <span class="dt">Int</span> <span class="kw">where</span>
+    mempty <span class="fu">=</span> <span class="dv">0</span>
+    mappend <span class="fu">=</span> (<span class="fu">+</span>)
+
+<span class="ot">countInstructions ::</span> <span class="dt">BlogF</span> a <span class="ot">-&gt;</span> <span class="dt">Int</span>
+countInstructions _ <span class="fu">=</span> <span class="dv">1</span>
+
+<span class="ot">main ::</span> <span class="dt">IO</span> ()
+main <span class="fu">=</span> <span class="kw">do</span>
+    putStrLn <span class="st">&quot;NUMBER OF REQUESTS TO THE DB:&quot;</span>
+    print instructions
+    <span class="kw">where</span> instructions <span class="fu">=</span> runAp_ countInstructions page
+          page <span class="fu">=</span> getPage <span class="dv">1</span> <span class="dv">1</span>
+
+<span class="co">-- Output:</span>
+<span class="fu">--</span>
+<span class="co">-- NUMBER OF REQUESTS TO THE DB:</span>
+<span class="co">-- 2</span></code></pre></div>
+<p><code>runAp_</code> es una versión modificada de <code>runAp</code> que toma como intérprete una función:</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">fn ::</span> <span class="dt">Monoid</span> b <span class="ot">=&gt;</span> f a <span class="ot">-&gt;</span> b</code></pre></div>
+<p>Que aplica <code>mappend</code> a todos los <code>b</code> producidos en nuestro intérprete.</p>
+<h2 id="conclusiones">Conclusiones</h2>
+<p>Hay que identificar cuándo usar Aplicativos. Es un poco complicado al principio, dado que no estamos habituados a trabajar con ellos, pero como regla, podemos pensar que los aplicativos nos ayudan cuando nuestras operaciones no dependen unas de las otras.</p>
+<h1 id="footnotes">Footnotes</h1>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>En un principio, los Applicative se denominaron Idioms.<a href="#fnref1">↩</a></p></li>
+</ol>
+</div>
+</article>
+
+    </div>
+
+    <footer class="footer">
+      <div>
+        <nav class="container">
+          <p>
+            Sitio generado con <a target="_blank" href="https://jaspervdj.be/hakyll/">Hakyll</a>.
+            Código fuente en <a target="_blank" href="https://github.com/haskellMAD/hakyll-haskellnautas">Github</a>.
+            Contenido reutilizable bajo <a target="_blank" href="https://creativecommons.org/licenses/by-sa/3.0/es/">CC BY-SA 3.0</a>.
+          </p>
+        </nav>
+      </div>
+    </footer>
+
+    <script src="http://cdn.jsdelivr.net/walkway/0.0.7/walkway.min.js"></script>
+    <script>window.Walkway || document.write('<script src="/js/walkway.min.js"><\/script>')</script>
+
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
+    <script>window.jQuery || document.write('<script src="/js/vendor/jquery-3.1.1.slim.min.js"><\/script>')</script>
+    <script>
+      var svg = new Walkway({selector:'.cover-content svg',duration:'1000'});
+      svg.draw();
+    </script>
+    <script src="../../js/highlight.pack.js"></script>
+    <script>
+      jQuery(window).scroll(function() {
+        var scroll = jQuery(window).scrollTop();
+        if (scroll > 100) {
+          jQuery(".navbar").addClass("navbar-bg");
+        } else {
+          jQuery(".navbar").removeClass("navbar-bg");
+        }
+      });
+      jQuery(document).ready(function() {
+        jQuery('pre code').each(function(i, block) {
+          hljs.highlightBlock(block);
+        });
+      });
+      (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+      function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+      e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+      e.src='https://www.google-analytics.com/analytics.js';
+      r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+      ga('create','UA-86748990-1','auto');ga('send','pageview');
+    </script>
+  </body>
+</html>
