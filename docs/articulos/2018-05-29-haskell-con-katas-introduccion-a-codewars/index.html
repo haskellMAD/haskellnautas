@@ -1,0 +1,179 @@
+<!doctype html>
+<html class="no-js" lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Haskell con Katas: Introducción a CodeWars - haskellnautas</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="apple-touch-icon" sizes="57x57" href="../../apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="../../apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="../../apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="../../apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="../../apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="../../apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="../../apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="../../apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="../../android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="../../favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
+    <link rel="manifest" href="../../manifest.json">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+
+    <link rel="stylesheet" href="../../css/normalize.css">
+    <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="../../styles/grayscale.css">
+  </head>
+
+  <body>
+    <div class="content">
+      <header class="secondary-header">
+  <nav class="navigation-wrapper">
+    <ul class="secondary-navigation">
+      <li><a class="font-small" href="../../">Haskellnautas</a></li>
+      <li><a class="font-small" href="../../comunidad">Comunidad</a></li>
+      <li><a class="font-small" href="../../archivo">Archivo</a></li>
+      <li><a class="font-small" href="http://haskellnautas.herokuapp.com" target="_blank">Slack</a></li>
+    </ul>
+  </nav>
+</header>
+
+<article class="container">
+  <h1>Haskell con Katas: Introducción a CodeWars</h1>
+  <div class="info font-small">
+    Publicado el 29 de mayo de 2018 
+    
+    por <a href="../../autores/merchucris-sof98-naldoco">merchucris-sof98-naldoco</a>
+    
+  </div>
+
+  <h3 id="bienvenida">Bienvenida</h3>
+<p><strong><a href="https://www.meetup.com/Haskell-MAD" target="_blank">HaskellMad</a></strong> tiene como una de sus actividades difundir la idea de que <strong>Haskell</strong> es un extraordinario lenguaje de programación, <strong>divertido</strong> y <strong>provechoso</strong> de aprender y utilizar. Y se nos ha ocurrido que Haskell podría ser una de las claves que permitan dar el salto de calidad desde un aprendizaje tradicional de “<strong>hacer ejercicios de programación</strong>” hacia un modelo mucho más ambicioso, eficaz y moderno basado en el sugerente concepto de “<strong>kata de programación</strong>”, término aún poco preciso, que se intuye, pero que no se termina de concretar en la práctica.</p>
+<p>Allí donde hay un reto de programación, puede y debe haber una kata, y Haskell va a ser nuestro aliado.</p>
+<p>Con esto en mente, ya hemos realizado un <strong><a href="https://www.meetup.com/Haskell-MAD/events/249769977/" target="_blank">taller</a></strong> de la plataforma web <strong>CodeWars</strong>, tal vez la mejor plataforma web comunitaria de retos de programación, donde hemos mostrado los elementos que ofrece Haskell para lograr que lo que CodeWars identifica como “katas” hagan honor a su nombre, haciendo valer la gran <strong>expresividad</strong>, <strong>abstracción</strong> y <strong>concisión</strong> de nuestro lenguaje favorito.</p>
+<p>Durante el taller se mostraron algunas <strong>estrategias</strong> y <strong>técnicas</strong> que con fluidez permiten trabajar y <strong>repensar</strong> el resultado obtenido por uno mismo, junto con el resto de soluciones del mismo problema aportados por otros programadores de manera provechosa y original.</p>
+<p>Esta especie de juego que se hace con el código está diseñado para que afloren y destaquen una variedad de importantes <strong>detalles abstractos</strong> relacionados con la programación y ayuda a entender cómo programar con <strong>elegancia</strong> y <strong>efectividad</strong>.</p>
+<p>Mientras preparamos los artículos con la metodología que se perfiló en el taller mencionado, vamos a publicar varios <strong>artículos técnicos</strong> con los mimbres con los que trabajaremos. Este lo dedicamos a facilitar el uso de CodeWars.</p>
+<p>Si te surge alguna <strong>duda</strong> con este artículo o estás especialmente <strong>interesado</strong> en este enfoque que relaciona <strong>Haskell</strong> y <strong>katas</strong>, te recomendamos encarecidamente que te des de alta en el <strong><a href="https://haskellnautas.herokuapp.com*" target="_blank">slack de Haskellnautas</a></strong>, y accedas al canal “<strong>katas</strong>” o al canal de entrada. <strong>Te esperamos</strong>.</p>
+<h3 id="codewars">CodeWars</h3>
+<p>En este primer artículo de la serie “<strong>Katas de programación y Haskell</strong>” vamos a presentar <strong><a href="https://www.codewars.com" target="_blank">CodeWars</a></strong>, web para programadores donde podemos localizar y seleccionar las “katas” que nos interesen, para tratar de resolverlas, interaccionar con otros programadores y hasta desarrollar nuevas propuestas de problemas que aumentarían el conjunto disponible a resolver.</p>
+<p>En apenas cinco años desde su puesta en marcha, CodeWars actualmente ofrece <strong>miles</strong> de estos problemas para <strong>Haskell</strong> (y también para otros lenguajes). Es un bello ejemplo de Web 3.0 donde “cualquier persona” está invitada a engrandecer y mejorar la plataforma de muy variadas maneras. Cualquiera puede ser protagonista de crear y elevar contínuamente la <strong>calidad de la documentación</strong>, en especial de las instrucciones y ejemplos, así como de los <strong>tests</strong>, a los que se les sitúa en el primer plano que se merecen, invitando a que sean editados <strong>a la vez</strong> que se trabaje con el código de la solución.</p>
+<p>Por tanto, desde la propia plataforma se puede, con un interfaz integrado, <strong>editar tanto los test como la solución</strong>, <strong>compilar el código</strong>, <strong>ejecutarlo con los tests</strong>, y obtener un posible informe de <strong>errores</strong> de compilación. Y una vez verificado como aceptable, se permite <strong>comparar la solución</strong> propia con otras que ya ha sido aportadas anteriormente, una actividad que en próximos artículos demostraremos que puede resultar muy provechosa, mediante un procedimiento donde <strong>Haskell brilla con luz propia</strong>.</p>
+<h3 id="primeros-pasos-con-codewars">Primeros pasos con CodeWars</h3>
+<p>Por decirlo del tirón, sería ir a la <strong>web</strong> de CodeWars, seleccionar <strong>Haskell</strong>, pasar una mínima <strong>prueba</strong>, crear un <strong>usuario</strong>, familiarizarte con el panel de control (<strong>Dashboard</strong>), ir al panel <strong>Kata</strong>, <strong>buscar</strong> la kata “Remove the minimum” (con la que trabajaremos en primer lugar), <strong>visitar</strong> la kata y finalmente tratar de resolverla (<strong>Train</strong>).</p>
+<p>Lo vemos más detenidamente:</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Entrar en CodeWars</strong>:</p>
+<ul>
+<li><a href="https://www.codewars.com" target="_blank">https://www.codewars.com</a></li>
+</ul></li>
+</ol>
+<p>Nota: En las imágenes resaltamos en <em>amarillo</em> los elementos que se destacan en cada descripción.</p>
+<ol start="2" style="list-style-type: decimal">
+<li>Registrarse como usuario nuevo. (<strong>Sign Up</strong>)</li>
+</ol>
+<p><a href="../../images/naldoco/00-CodeWarsSignUp-a.jpg"> <img src="../../images/naldoco/00-CodeWarsSignUp-a.jpg" alt="CodeWars sign up" width="640"> </a></p>
+<ol start="3" style="list-style-type: decimal">
+<li>Antes de registrarte debes elegir un lenguaje y pasar una pequeña <strong>prueba</strong>. Hacemos click en <strong>Haskell</strong>.</li>
+</ol>
+<p><a href="../../images/naldoco/00-CodeWarsSignUp-b.png"> <img src="../../images/naldoco/00-CodeWarsSignUp-b.png" alt="CodeWars sign up" width="640"> </a></p>
+<ol start="4" style="list-style-type: decimal">
+<li><p>Esta será nuestra primera kata. Se trata de <strong>corregir el error</strong> de la función que “multiplica dos enteros”. Cuando finalices, pulsa sobre “<strong>Submit</strong>”. Si no das con la solución, pulsa el botón rojo de “<strong>TRY AGAIN</strong>”, y prueba otra vez.</p>
+<ul>
+<li>Si sabes algo de Haskell no te resultará difícil conseguirlo. (Guiño, guiño)</li>
+<li>Si tienes dificultades, <strong>inténtalo un poco más</strong>. Merece la pena.
+<ul>
+<li>Recuerda que Haskell tiene una <strong>sintaxis muy sencilla</strong>, similar a las <strong>matemáticas</strong> de la escuela.</li>
+<li>Si sigues perdido, pasa el ratón <a href="*" title="Sobran 3 cosas">por encima de este texto</a>.</li>
+<li>En último extremo, pulsa <strong><a href="../../images/naldoco/00-CodeWarsSignUp-d.png" target="_blank">aquí</a></strong>.</li>
+</ul></li>
+</ul></li>
+</ol>
+<p><a href="../../images/naldoco/00-CodeWarsSignUp-c.png"> <img src="../../images/naldoco/00-CodeWarsSignUp-c.png" alt="CodeWars sign up" width="640"> </a></p>
+<ol start="5" style="list-style-type: decimal">
+<li>¡Ya tienes tu primera kata resuelta! Ahora debes crear tu <strong>identificador de usuario</strong>.</li>
+</ol>
+<ul>
+<li>Si ya tienes cuenta en <strong>GitHub</strong>, selecciona la primera opción.</li>
+<li>Si lo prefieres, puedes crear un usuario <strong>rellenando</strong> estos campos y pulsando en <strong>ENLIST</strong>:
+<ul>
+<li>dirección de correo (<strong>Email</strong>)</li>
+<li>nombre (<strong>Username</strong>)</li>
+<li>clave de nueva creación que te inventes para entrar en CodeWars (<strong>Password</strong>)</li>
+</ul></li>
+</ul>
+<p><a href="../../images/naldoco/00-CodeWarsSignUp-e.png"> <img src="../../images/naldoco/00-CodeWarsSignUp-e.png" alt="CodeWars sign up" width="640"> </a></p>
+<ol start="6" style="list-style-type: decimal">
+<li>Ahora cada vez que queramos entrar con nuestro usuario haremos un “<strong>Log In</strong>” (<strong>Sign In</strong>), lo que nos conducirá a nuestro propio panel de control o <strong>Home</strong> (<strong>Dashboard</strong>). (<a href="https://www.codewars.com/dashboard" class="uri">https://www.codewars.com/dashboard</a>). Desde cualquier pantalla podemos volver al panel de control pulsando el botón rojo con esa especie de estrella oriental que vemos arriba a la izquierda.</li>
+</ol>
+<p><a href="../../images/naldoco/01-Dashboard-a.png"> <img src="../../images/naldoco/01-Dashboard-a.png" alt="CodeWars sign up" width="640"> </a></p>
+<ol start="7" style="list-style-type: decimal">
+<li>Debajo del <strong>Dashboard</strong> o <strong>Home</strong> tenemos el botón de <strong>Kata</strong>, lo pulsamos.</li>
+</ol>
+<p><a href="../../images/naldoco/02-Kata-a.png"> <img src="../../images/naldoco/02-Kata-a.png" alt="CodeWars sign up" width="640"> </a></p>
+<ol start="8" style="list-style-type: decimal">
+<li>Ahora estamos en el panel de las katas. Vamos a utilizar el buscador de katas (<strong>Search</strong>).</li>
+</ol>
+<p><a href="../../images/naldoco/03-KataSearch-a.png"> <img src="../../images/naldoco/03-KataSearch-a.png" alt="CodeWars sign up" width="640"> </a></p>
+<ol start="9" style="list-style-type: decimal">
+<li>Buscamos una kata que contiene en el nombre “<strong>remove minimum</strong>”. Localizamos la kata “<strong>Remove the minimum</strong>”. <strong>Pulsamos</strong> sobre ella en el propio nombre.</li>
+</ol>
+<p><a href="../../images/naldoco/04-KataSearch2-a.png"> <img src="../../images/naldoco/04-KataSearch2-a.png" alt="CodeWars sign up" width="640"> </a></p>
+<ol start="10" style="list-style-type: decimal">
+<li>Ya hemos localizado una kata concreta. Le echamos un vistazo, y como nos interesa, pulsamos sobre el botón azul “<strong>TRAIN</strong>”. Llegamos al IDE (Entorno de desarrollo integrado) Por fin podemos jugar con la kata.</li>
+</ol>
+<p>Pues eso. <strong>¡A jugar!</strong></p>
+<p><a href="../../images/naldoco/05-KataSearch3-a.png"> <img src="../../images/naldoco/05-KataSearch3-a.png" alt="CodeWars sign up" width="640"> </a></p>
+<p><strong>¡Hasta la próxima entrega!</strong> (También nos puedes encontrar en <a href="https://haskellnautas.slack.com" target="_blank">https://haskellnautas.slack.com</a>).</p>
+</article>
+
+    </div>
+
+    <footer class="footer">
+      <div>
+        <nav class="container">
+          <p>
+            Sitio generado con <a target="_blank" href="https://jaspervdj.be/hakyll/">Hakyll</a>.
+            Código fuente en <a target="_blank" href="https://github.com/haskellMAD/hakyll-haskellnautas">Github</a>.
+            Contenido reutilizable bajo <a target="_blank" href="https://creativecommons.org/licenses/by-sa/3.0/es/">CC BY-SA 3.0</a>.
+          </p>
+        </nav>
+      </div>
+    </footer>
+
+    <script src="http://cdn.jsdelivr.net/walkway/0.0.7/walkway.min.js"></script>
+    <script>window.Walkway || document.write('<script src="/js/walkway.min.js"><\/script>')</script>
+
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
+    <script>window.jQuery || document.write('<script src="/js/vendor/jquery-3.1.1.slim.min.js"><\/script>')</script>
+    <script>
+      var svg = new Walkway({selector:'.cover-content svg',duration:'1000'});
+      svg.draw();
+    </script>
+    <script src="../../js/highlight.pack.js"></script>
+    <script>
+      jQuery(window).scroll(function() {
+        var scroll = jQuery(window).scrollTop();
+        if (scroll > 100) {
+          jQuery(".navbar").addClass("navbar-bg");
+        } else {
+          jQuery(".navbar").removeClass("navbar-bg");
+        }
+      });
+      jQuery(document).ready(function() {
+        jQuery('pre code').each(function(i, block) {
+          hljs.highlightBlock(block);
+        });
+      });
+      (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+      function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+      e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+      e.src='https://www.google-analytics.com/analytics.js';
+      r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+      ga('create','UA-86748990-1','auto');ga('send','pageview');
+    </script>
+  </body>
+</html>
