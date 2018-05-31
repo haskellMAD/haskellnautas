@@ -36,7 +36,7 @@ small, .font-small {font-size: 0.707em;}
 
 
 .cover-image {
-  background: url("./../images/bg.jpg") no-repeat center top;
+  background: url("https://naldoco.github.io/haskellnautas/images/bg.jpg") no-repeat center top;
   background-size: cover;
   color: #fff;
   position: relative;
