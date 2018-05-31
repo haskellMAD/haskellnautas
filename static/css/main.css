@@ -38,7 +38,7 @@ small, .font-small {font-size: 0.707em;}
 .cover-image {
   background: url("/images/bg.jpg") no-repeat center top;
   background-size: cover;
-  color: #fff;
+  /* color: #fff; */
   position: relative;
   height: 25em;
   margin-bottom: 2em;
