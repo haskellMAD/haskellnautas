@@ -92,18 +92,6 @@ small, .font-small {font-size: 0.707em;}
   position: relative;
 }
 
-.cover-content svg path {
-  stroke: white;
-  stroke-width: 1px;
-  fill: transparent;
-}
-
-.cover-content svg path.bottom-line {
-  stroke: white;
-  stroke-width: 0px;
-  fill: white;
-}
-
 .navbar {
   position: fixed;
   left: 0; right: 0;
