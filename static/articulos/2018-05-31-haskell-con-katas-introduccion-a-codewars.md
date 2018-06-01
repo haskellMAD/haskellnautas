@@ -1,6 +1,6 @@
 ---
-title: Haskell con Katas: Introducción a CodeWars
-author: merchucris-sof98-naldoco
+title: 'Haskell con Katas: Introducción a CodeWars'
+author: 'merchucris-sof98-naldoco'
 extract: Las katas son un método óptimo para la iniciación y el perfeccionamiento de Haskell... ¡y viceversa!
 ---
 
