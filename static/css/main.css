@@ -138,7 +138,7 @@ small, .font-small {font-size: 0.707em;}
   overflow: hidden;
   background: url("/images/haskell-pattern.png") repeat;
 }
-
+/*
 .footer > div {
   padding-top: 10em;
   min-height: 15em;
@@ -153,7 +153,7 @@ small, .font-small {font-size: 0.707em;}
 .footer p, .footer a {
   color: #999;
 }
-
+*/
 code, pre, kbd, samp {
   font-family: Inconsolata, monospace;
 }
