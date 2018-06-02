@@ -36,15 +36,15 @@ small, .font-small {font-size: 0.707em;}
 
 
 .cover-image {
-  background: url("/images/bg.jpg") no-repeat center top;
+  background: url("../images/bg.jpg") no-repeat center top;
   background-size: cover;
-  /* color: #fff; */
   position: relative;
   height: 25em;
   margin-bottom: 2em;
 }
 
 .cover-content {
+  color: #fff;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -136,7 +136,7 @@ small, .font-small {font-size: 0.707em;}
 
 .footer {
   overflow: hidden;
-  background: url("/images/haskell-pattern.png") repeat;
+  background: url("../images/haskell-pattern.png") repeat;
 }
 
 .footer > div {
